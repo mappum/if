@@ -7,6 +7,11 @@ npm install if
 ```
 
 ### Usage
+When requiring `if`, you will have to capitalize your variable name. Javascript reserves the `if` keyword to stay backwards-compatible with the legacy implementation of `if`.
+```js
+var If = require('if');
+```
+
 If the condition is truthy, the handler function passed to `Then` will be called.
 ```js
 If(condition).Then(handler);
