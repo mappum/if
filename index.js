@@ -1,6 +1,5 @@
 function If(condition) {
   let decisionMap = new Map();
-  let _this = this
   decisionMap.set(true, () => {
     this.call = call.bind(this)
     this.condition = !!condition;
