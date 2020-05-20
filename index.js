@@ -1,33 +1,40 @@
 function If(condition) {
-  this.condition = condition;
-  this.call = call.bind(this);
+  let decisionMap = new Map();
+  decisionMap.set(true, () => {
+    this.call = call.bind(this)
+    this.condition = !!condition;
+    this.executed = false;
+    return this
+  });
+  decisionMap.set(false, () => new If(condition));
 
-  return (this instanceof If) ?
-    this :
-    new If(condition);
+  return decisionMap.get(this instanceof If)();
 }
 
 If.prototype.Then = function(handler) {
-  this.condition && !this.executed ?
-    this.call(handler) :
-    void(0);
+  let decisionMap = new Map();
+  decisionMap.set(true, () => this.call(handler));
+  decisionMap.set(false, () => void(0));
 
+  decisionMap.get(this.condition && !this.executed)();
   return this;
 };
 
 If.prototype.Else = function(handler) {
-  !this.condition && !this.executed && handler ?
-    this.call(handler) :
-    void(0);
+  let decisionMap = new Map();
+  decisionMap.set(true, () => this.call(handler));
+  decisionMap.set(false, () => void(0));
 
+  decisionMap.get(!this.condition && !this.executed && !!handler)();
   return this;
 };
 
 If.prototype.If = function(condition) {
-  !this.executed ?
-    this.condition = condition :
-    void(0);
+  let decisionMap = new Map();
+  decisionMap.set(true, () => this.condition = !!condition);
+  decisionMap.set(false, () => void(0));
 
+  decisionMap.get(!this.executed)();
   return this;
 };
 
